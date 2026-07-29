@@ -60,3 +60,8 @@ jobs:
       - name: Run TFLint
         run: tflint --recursive
         working-directory: .
+
+      - name: Run tfsec Security Scan
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: dev/parent
