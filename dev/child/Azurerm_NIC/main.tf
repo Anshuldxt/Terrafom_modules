@@ -1,3 +1,13 @@
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 4.0.0"
+    }
+  }
+}
+
 resource "azurerm_network_interface" "nic_dev" {
 
     for_each = var.nic_dev
