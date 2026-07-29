@@ -11,7 +11,7 @@ terraform {
 
 resource "azurerm_linux_virtual_machine" "example" {
 
-    for_each = var.vm_dev
+  for_each = var.vm_dev
 
   name                = each.value.name
   resource_group_name = each.value.resource_group_name
@@ -23,11 +23,11 @@ resource "azurerm_linux_virtual_machine" "example" {
 
   admin_username = each.value.admin_username
   admin_password = each.value.admin_password
-  
+
   network_interface_ids = [data.azurerm_network_interface.nic_dev[each.key].id]
 
   os_disk {
- caching = each.value.caching
+    caching              = each.value.caching
     storage_account_type = each.value.storage_account_type
 
   }
@@ -38,7 +38,7 @@ resource "azurerm_linux_virtual_machine" "example" {
     offer     = each.value.offer
     sku       = each.value.sku
     version   = each.value.version
-  } 
+  }
 
 }
 
@@ -46,8 +46,8 @@ data "azurerm_network_interface" "nic_dev" {
 
   for_each = var.vm_dev
 
-  name = each.value.nic_name
+  name                = each.value.nic_name
   resource_group_name = each.value.resource_group_name
-  
+
 }
 

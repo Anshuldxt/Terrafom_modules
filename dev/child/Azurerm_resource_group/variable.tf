@@ -1,5 +1,5 @@
 variable "RG_Dev" {
-    type = object({
+  type = object({
     name     = string
     location = string
   })

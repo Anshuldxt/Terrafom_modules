@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-resource    "azurerm_subnet" "subnet_dev" {
+resource "azurerm_subnet" "subnet_dev" {
 
   for_each = var.subnet_dev
 
