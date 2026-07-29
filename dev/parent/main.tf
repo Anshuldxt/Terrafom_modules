@@ -38,15 +38,3 @@ module "azurerm_linux_virtual_machine" {
 
 }
 
-module "azurerm_key_value" {
-
-  source     = "../child/azurerm_key_vault"
-  kv_dev     = var.kv_dev
-  depends_on = [module.azuerm_resource_group]
-}
-
-module "azurerm_key_vault_secret" {
-  source     = "../child/azurerm_key_vault"
-  kv_dev     = var.kv_dev
-  depends_on = [module.azurerm_key_value]
-}
