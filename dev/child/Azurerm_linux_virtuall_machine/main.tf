@@ -11,7 +11,7 @@ resource "azurerm_linux_virtual_machine" "example" {
   disable_password_authentication = false
 
   admin_username = each.value.admin_username
-  admin_password = data.azurerm_key_vault_secret.vm_password[each.key].value
+  admin_password = each.value.admin_password
   
   network_interface_ids = [data.azurerm_network_interface.nic_dev[each.key].id]
 
