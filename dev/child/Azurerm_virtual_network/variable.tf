@@ -1,0 +1,3 @@
+variable "Vnet_dev" {
+  
+}
