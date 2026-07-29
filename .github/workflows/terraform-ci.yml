@@ -65,3 +65,8 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           working_directory: dev/parent
+      - name: Run Checkov Security Scan
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: dev/parent
+          framework: terraform
