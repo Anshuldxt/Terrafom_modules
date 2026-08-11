@@ -40,7 +40,7 @@ module "azurerm_linux_virtual_machine" {
   ssh_public_key = var.ssh_public_key
 
 
-depends_on = [module.azurerm_network_interface]
+  depends_on = [module.azurerm_network_interface]
 }
 
 module "azurerm_nsg" {
@@ -51,7 +51,7 @@ module "azurerm_nsg" {
 
   nsg_subnet_association = var.nsg_subnet_association
 
-depends_on = [module.azurerm_subnet]
+  depends_on = [module.azurerm_subnet]
 }
 
 
@@ -70,6 +70,6 @@ module "azurerm_bastion" {
   sku = var.bastion_sku
 
 
-depends_on = [module.azurerm_nsg, module.azurerm_linux_virtual_machine]
+  depends_on = [module.azurerm_nsg, module.azurerm_linux_virtual_machine]
 
 }
