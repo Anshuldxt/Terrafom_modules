@@ -45,7 +45,7 @@ module "azurerm_linux_virtual_machine" {
 
 module "azurerm_nsg" {
 
-  source = "../child/Azurerm_nsg"
+  source = "../child/Azurerm_NSG"
 
   nsg_dev = var.nsg_dev
 
