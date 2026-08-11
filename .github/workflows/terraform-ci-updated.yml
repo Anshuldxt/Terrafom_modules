@@ -23,36 +23,31 @@ permissions:
 
 jobs:
   terraform-ci:
-
     name: Terraform Validation Pipeline
-
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: dev/parent
-
     steps:
-
+      # ============================================================
+      # CHECKOUT
+      # ============================================================
       - name: Checkout Repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      # ------------------------------------------------------------
-      # Secret scanning - TruffleHog
-      # Scans Git history/changes for exposed credentials.
-      # ------------------------------------------------------------
+      # ============================================================
+      # TRUFFLEHOG
+      # ============================================================
       - name: TruffleHog Secret Scan
         uses: trufflesecurity/trufflehog@v3.96.0
         with:
           path: .
-          version: v3.96.0
+          version: 3.96.0
           extra_args: --results=verified,unknown,unverified --fail-on-scan-errors
 
-      # ------------------------------------------------------------
-      # Terraform
-      # ------------------------------------------------------------
+      # ============================================================
+      # TERRAFORM
+      # ============================================================
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
@@ -63,39 +58,41 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform Init
+        working-directory: dev/parent
         run: terraform init -backend=false
 
       - name: Terraform Validate
+        working-directory: dev/parent
         run: terraform validate
 
-      # ------------------------------------------------------------
-      # TFLint
-      # ------------------------------------------------------------
+      # ============================================================
+      # TFLINT
+      # ============================================================
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
-      - name: Show TFLint Version
+      - name: TFLint Version
         run: tflint --version
 
-      - name: Initialize TFLint
+      - name: TFLint Init
+        working-directory: dev/parent
         run: tflint --init
-        working-directory: .
 
       - name: Run TFLint
-        run: tflint --recursive
-        working-directory: .
+        working-directory: dev/parent
+        run: tflint
 
-      # ------------------------------------------------------------
-      # tfsec
-      # ------------------------------------------------------------
+      # ============================================================
+      # TFSEC
+      # ============================================================
       - name: Run tfsec Security Scan
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           working_directory: dev/parent
 
-      # ------------------------------------------------------------
-      # Checkov
-      # ------------------------------------------------------------
+      # ============================================================
+      # CHECKOV
+      # ============================================================
       - name: Run Checkov Security Scan
         uses: bridgecrewio/checkov-action@v12
         with:
@@ -105,22 +102,12 @@ jobs:
           log_level: WARNING
           container_user: 0
 
-      # ------------------------------------------------------------
-      # Gitleaks
-      # Custom .gitleaks.toml also detects Terraform-style
-      # hardcoded passwords/secrets such as:
-      # admin_password = "..."
-      # password       = "..."
-      # client_secret  = "..."
-      # api_key        = "..."
-      # token           = "..."
-      # private_key    = "..."
-      # ------------------------------------------------------------
+      # ============================================================
+      # GITLEAKS
+      # ============================================================
       - name: Run Gitleaks Secret Scan
         uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_CONFIG: .gitleaks.toml
-          # 8.30.1 has a reported detection regression; pin 8.30.0
-          # until a fixed release is confirmed.
           GITLEAKS_VERSION: 8.30.0
