@@ -1,0 +1,12 @@
+title = "Terrafom_modules Gitleaks Configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow only known non-secret test values"
+
+paths = [
+  '''\.terraform/''',
+  '''\.terraform\.lock\.hcl'''
+]
