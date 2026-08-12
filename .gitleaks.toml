@@ -1,10 +1,56 @@
-title = "Terrafom_modules Gitleaks Configuration"
+title = "Terraform Secret Scanning"
 
 [extend]
 useDefault = true
 
+[[rules]]
+id = "terraform-admin-password"
+
+description = "Terraform admin password"
+
+regex = '''(?i)(admin_password|administrator_password|admin-pass|adminpassword)\s*=\s*["']([^"']+)["']'''
+
+secretGroup = 2
+
+keywords = [
+  "admin_password",
+  "administrator_password",
+  "adminpassword"
+]
+
+
+[[rules]]
+id = "terraform-client-secret"
+
+description = "Terraform client secret"
+
+regex = '''(?i)(client_secret|clientsecret)\s*=\s*["']([^"']+)["']'''
+
+secretGroup = 2
+
+keywords = [
+  "client_secret",
+  "clientsecret"
+]
+
+
+[[rules]]
+id = "terraform-password"
+
+description = "Terraform password"
+
+regex = '''(?i)(password|passwd)\s*=\s*["']([^"']+)["']'''
+
+secretGroup = 2
+
+keywords = [
+  "password",
+  "passwd"
+]
+
+
 [allowlist]
-description = "Allow only known non-secret test values"
+description = "Terraform generated files"
 
 paths = [
   '''\.terraform/''',
